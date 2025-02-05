@@ -1,6 +1,8 @@
 import '../components/users-filter.js';
 
 import { LitElement, css, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { repeat } from 'lit/directives/repeat.js';
 
 import { di } from '../di';
 
@@ -35,16 +37,26 @@ export class UsersComponent extends LitElement {
   render() {
     return html`
       <div class="left">
-        <my-users-filter></my-users-filter>
+        <my-users-filter filter="t"></my-users-filter>
         <nav>
-          <a class="active" href="#"> Toto </a>
+          <!-- <a class="active" href="#"> Toto </a>
           <a href="#"> Titi </a>
-          <a href="#"> Tata </a>
+          <a href="#"> Tata </a> -->
+          ${repeat(
+            this.users,
+            (user) => user.id,
+            (user) =>
+              html`<a
+                href="#"
+                class="${classMap({
+                  active: user.id % 2 === 0,
+                })}"
+                >${user.name}</a
+              >`,
+          )}
         </nav>
       </div>
-      <div class="right">
-        
-      </div>
+      <div class="right"></div>
     `;
   }
 
@@ -63,7 +75,7 @@ export class UsersComponent extends LitElement {
     }
 
     .left a.active {
-      background-color: lightblue;
+      background-color: var(--my-bg-color, lightblue);
     }
   `;
 }
