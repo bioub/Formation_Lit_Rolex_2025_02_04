@@ -5,9 +5,12 @@ import { classMap } from 'lit/directives/class-map.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 import { di } from '../di';
+import { UsersController } from '../services/UsersController.js';
 
 export class UsersComponent extends LitElement {
   router = di.inject('router');
+
+  usersController = new UsersController(this);
 
   static properties = {
     searchTerm: { type: String },
@@ -43,7 +46,7 @@ export class UsersComponent extends LitElement {
           <a href="#"> Titi </a>
           <a href="#"> Tata </a> -->
           <!-- ${repeat(
-            this.users.filter((user) => user.name.toLowerCase().includes(this.searchTerm.toLowerCase())),
+            this.usersController.items?.filter((user) => user.name.toLowerCase().includes(this.searchTerm.toLowerCase())),
             (user) => user.id,
             (user) =>
               html`<a
@@ -54,18 +57,21 @@ export class UsersComponent extends LitElement {
                 >${user.name}</a
               >`,
           )} -->
-          ${this.users.filter((user) => user.name.toLowerCase().includes(this.searchTerm.toLowerCase())).map((user) =>
+          ${this.usersController.items?.filter((user) => user.name.toLowerCase().includes(this.searchTerm.toLowerCase())).map((user) =>
               html`<a
-                href="#"
+                href=${`/users/${user.id}`}
                 class="${classMap({
-                  active: user.id % 2 === 0,
+                  active: user.id == this.router.resolver.route.parameters.userId,
                 })}"
+                @click=${this.handleClick}
                 >${user.name}</a
               >`,
           )}
         </nav>
       </div>
-      <div class="right"></div>
+      <div class="right">
+       <rlx-flx-router-view></rlx-flx-router-view>
+      </div>
     `;
   }
 

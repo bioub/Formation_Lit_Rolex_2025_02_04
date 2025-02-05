@@ -76,7 +76,7 @@ Y ajouter cette méthode :
 ```
 async hostConnected() {
   const res = await fetch("https://jsonplaceholder.typicode.com/users", {
-    signal: this.abortController.signal,
+  // signal: this.abortController.signal,
   });
   this.items = await res.json();
   this.host.requestUpdate();

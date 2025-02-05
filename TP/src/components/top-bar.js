@@ -5,6 +5,14 @@ import { di } from "../di";
 export class TopBarComponent extends LitElement {
   router = di.inject("router");
 
+  /** @type {import('../services/SettingsStore').SettingsStore} */
+  settings = di.inject('settings');
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.settings.addHost(this);
+  }
+
   handleClick(event) {
     event.preventDefault();
     this.router.push(event.target.pathname);
@@ -12,7 +20,7 @@ export class TopBarComponent extends LitElement {
 
   render() {
     return html`
-      <h1>My App</h1>
+      <h1>${this.settings.state.title}</h1>
       <nav>
         <a href="/" @click=${this.handleClick}>Home</a>
         <a href="/settings" @click=${this.handleClick}>Settings</a>
