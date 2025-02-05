@@ -31,21 +31,30 @@ export class UsersComponent extends LitElement {
   }
 
   handleFilterChanged(event) {
-    this.filter = event.detail;
+    this.searchTerm = event.detail;
   }
 
   render() {
     return html`
       <div class="left">
-        <my-users-filter filter="t"></my-users-filter>
+        <my-users-filter filter=${this.searchTerm} @filter-change=${this.handleFilterChanged}></my-users-filter>
         <nav>
           <!-- <a class="active" href="#"> Toto </a>
           <a href="#"> Titi </a>
           <a href="#"> Tata </a> -->
-          ${repeat(
-            this.users,
+          <!-- ${repeat(
+            this.users.filter((user) => user.name.toLowerCase().includes(this.searchTerm.toLowerCase())),
             (user) => user.id,
             (user) =>
+              html`<a
+                href="#"
+                class="${classMap({
+                  active: user.id % 2 === 0,
+                })}"
+                >${user.name}</a
+              >`,
+          )} -->
+          ${this.users.filter((user) => user.name.toLowerCase().includes(this.searchTerm.toLowerCase())).map((user) =>
               html`<a
                 href="#"
                 class="${classMap({

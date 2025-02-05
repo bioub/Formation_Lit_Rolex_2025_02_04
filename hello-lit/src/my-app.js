@@ -23,6 +23,7 @@ class App extends LitElement {
     return html`
       <p>Prénom sélectionné : ${this.name}</p>
       <my-select .selected=${this.name} .items=${this.names} @selected-change=${this.updateName}></my-select>
+      <my-select .selected=${this.name} .items=${this.names} @selected-change=${this.updateName}></my-select>
     `;
   }
 }
